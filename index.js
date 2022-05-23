@@ -31,7 +31,7 @@ class Calculator {
     }
 
     compute() {
-        let computation 
+        let computation
         const prev = parseFloat(this.previousOperand)
         const current = parseFloat(this.currentOperand)
         if(isNaN(prev) || isNaN(current)) return
@@ -45,7 +45,7 @@ class Calculator {
             case '*':
                 computation = prev * current
                 break
-            case '÷':
+            case '/':
                 computation = prev / current
                 break
             default :
@@ -76,10 +76,10 @@ class Calculator {
     }
 
     updateDisplay(){
-        this.currentOperandTextElement.innerText = 
+        this.currentOperandTextElement.innerText =
         this.getDisplayNumber(this.currentOperand)
         if(this.operation != null){
-        this.previousOperandTextElement.innerText = 
+        this.previousOperandTextElement.innerText =
         `${this.previousOperand} ${this.operation}`
         }else{
             this.previousOperandTextElement.innerText = ''
@@ -103,11 +103,62 @@ const calculator  = new Calculator(previousOperandTextElement, currentOperandTex
 
 
 numberButtons.forEach( button => {
+
     button.addEventListener('click', ()=>{
         calculator.appendNumber(button.innerText)
         calculator.updateDisplay()
+
     })
 })
+
+
+
+window.addEventListener('keydown',(e)=>{
+    if(
+        e.key === "0" ||
+        e.key === "1" ||
+        e.key === "2" ||
+        e.key === "3" ||
+        e.key === "4" ||
+        e.key === "5" ||
+        e.key === "6" ||
+        e.key === "7" ||
+        e.key === "8" ||
+        e.key === "9" ||
+        e.key === "."
+    ){
+        clickButtonEl(e.key);
+    }else if(e.key === "+" || e.key ==="-"||e.key === "/" || e.key ==="*"){
+        clickButtonOperator(e.key)
+    }else if(e.key === "Enter" || e.key === "="){
+        clickEqual()
+    }
+
+
+})
+
+
+function clickEqual(){
+    equalsButton.click()
+}
+
+function clickButtonEl(key){
+    numberButtons.forEach( button => {
+        if(button.innerText === key){
+            button.click()
+        }
+    })
+}
+
+
+function clickButtonOperator(key){
+    operationButtons.forEach( button => {
+        if(button.innerText === key){
+            button.click()
+        }
+    })
+}
+
 
 
 operationButtons.forEach( button => {
@@ -122,6 +173,8 @@ equalsButton.addEventListener('click', button => {
     calculator.compute()
     calculator.updateDisplay()
 })
+
+
 allClearButton.addEventListener('click', button => {
     calculator.clear()
     calculator.updateDisplay()
